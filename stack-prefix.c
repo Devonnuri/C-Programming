@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #define STACK_SIZE 100
+#define CALC_SIZE 100
 
 char stack[STACK_SIZE];
+char calc[CALC_SIZE]; 
 int top=-1;
 
 void push(char x);
+void writeCalc(char ch);
 char pop();
 int isFull();
 int isEmpty();
@@ -16,6 +19,9 @@ int main(){
 	char str[100];
 	scanf("%s", str);
 	
+	/*
+	 * 후위표기식 변환
+	 */
 	for(i=0; i<strlen(str); i++){ //문자를 받아서
 		char ch = str[i];
 		switch(ch){
@@ -28,17 +34,17 @@ int main(){
 			case '7':
 			case '8':
 			case '9':
-			case '0': printf("%c", ch); break; //만약 피연산자라면 출력 
+			case '0': writeCalc(ch); break; //만약 피연산자라면 출력 
 			case '(': push(ch); break; //여는 괄호라면 push 
 			case ')':
 				while(stack[top] != '('){ // "("가 아닐때까지 스택에서 pop 
-					printf("%c", pop());
+					writeCalc(pop());
 				}
 				pop(); //마지막 "(" 까지 pop 
 				break;
 			default:
 				while(getPrecedence(stack[top]) > getPrecedence(ch)){ //만약 스택의 top의 우선순위가 문자의 우선순위보다 작을때 까지 계속 
-					printf("%c", pop()); //스택에서 pop 
+					writeCalc(pop()); //스택에서 pop 
 				}
 				push(ch); //문자를 push 
 				break;
@@ -46,8 +52,15 @@ int main(){
 	}
 	
 	while(!isEmpty()){
-		printf("%c", pop()); //스택에 있는 모든 문자를 pop 
+		writeCalc(pop()); //스택에 있는 모든 문자를 pop 
 	}
+	
+	
+	/*
+	 * 후위표기식 계산 
+	 */
+	
+	
 	
 	return 0;
 }
@@ -61,7 +74,19 @@ int getPrecedence(char oper){ //우선순위 얻기
 		case '/': return 2; //*,/ 라면 2
 		default: return -1; //다 아니라면 -1 
 	}
-} 
+}
+
+void writeCalc(char ch){
+	int i;
+	for(i=0; i<CALC_SIZE; i++){
+		if(calc[i] == '\0'){
+			calc[i] = ch;
+			break;
+		}else{
+			continue;
+		}
+	}
+}
 
 void push(char x){
 	if(isFull()){ //스택이 차있다면 
