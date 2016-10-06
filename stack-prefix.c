@@ -60,7 +60,33 @@ int main(){
 	 * 후위표기식 계산 
 	 */
 	
+	printf("%d\n", strlen(calc));
+	for(i=0; i<strlen(calc); i++){ //문자를 받아서
+		char ch = calc[i];
+		switch(ch){
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '0': push(ch); break; //만약 피연산자라면 push 
+			default :{
+				int b = pop(); //후자를 스택에서 pop해서 가져옴 
+				int a = pop(); //전자를 스택에서 pop해서 가져옴 
+				if(ch == '+') push(a+b); //만약 연산자가 더하기면 전자와 후자를 더해서 push 
+				else if(ch == '-') push(a+b); //만약 연산자가 빼기면 전자와 후자를 빼서 push
+				else if(ch == '*') push(a*b); //만약 연산자가 곱하기면 전자와 후자를 곱해서 push
+				else if(ch == '/') push(a/b); //만약 연산자가 나누기면 전자와 후자를 나누어서 push
+				break;
+			}
+		}
+	}
 	
+	printf("%d", pop()); 
 	
 	return 0;
 }
