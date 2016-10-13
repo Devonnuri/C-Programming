@@ -43,7 +43,7 @@ int main() {
 			}
 			pop(); //마지막 "(" 까지 pop 
 		} else {
-			while (getPrecedence(stack[top]) > getPrecedence(ch)) { //만약 스택의 top의 우선순위가 문자의 우선순위보다 작을때 까지 계속 
+			while (getPrecedence(stack[top]) >= getPrecedence(ch)) { //만약 스택의 top의 우선순위가 문자의 우선순위보다 작을때 까지 계속 
 				writeCalc(pop()); //스택에서 pop 
 			}
 			push(ch); //문자를 push 
