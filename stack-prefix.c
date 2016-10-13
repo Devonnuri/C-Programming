@@ -14,15 +14,6 @@ int isFull();
 int isEmpty();
 int getPrecedence(char oper);
 
-void printStack() {
-	int i;
-	printf("[");
-	for (i = 0; i <= top; i++) {
-		printf("%c,", stack[i]);
-	}
-	printf("]\n");
-}
-
 int main() {
 	int i;
 	char str[100];
@@ -38,23 +29,28 @@ int main() {
 		} else if (ch == '(') {
 			push(ch);
 		} else if (ch == ')') {
-			while (stack[top] != '(') { // "("가 아닐때까지 스택에서 pop 
+			while (stack[top] != '(') { // "("가 아닐때까지 스택에서 pop
+				writeCalc(' ');
 				writeCalc(pop());
 			}
 			pop(); //마지막 "(" 까지 pop 
 		} else {
+			writeCalc(' ');
 			while (getPrecedence(stack[top]) >= getPrecedence(ch)) { //만약 스택의 top의 우선순위가 문자의 우선순위보다 작을때 까지 계속 
-				writeCalc(pop()); //스택에서 pop 
+				writeCalc(pop()); //스택에서 pop
+				writeCalc(' ');
 			}
 			push(ch); //문자를 push 
 		}
 	}
 
 	while (!isEmpty()) {
-		writeCalc(pop()); //스택에 있는 모든 문자를 pop 
+		writeCalc(' ');
+		writeCalc(pop()); //스택에 있는 모든 문자를 pop
+		writeCalc(' ');
 	}
 
-
+	
 	/*
 	* 후위표기식 계산
 	*/
@@ -75,8 +71,6 @@ int main() {
 		}
 	}
 
-	printf("%d", pop());
-
 	return 0;
 }
 
@@ -91,7 +85,8 @@ int getPrecedence(char oper) { //우선순위 얻기
 	}
 }
 
-void writeCalc(char ch) {
+//후위표기식 계산을 보다 편리하게 하기 위한 함수 
+void writeCalc(char ch) {  
 	int i;
 	for (i = 0; i<CALC_SIZE; i++) {
 		if (calc[i] == '\0') {
